@@ -35,3 +35,14 @@ yarn-error.log*
 # Testing
 coverage/
 .nyc_output/
+
+# Python
+skin-lesion-env/
+__pycache__/
+*.py[cod]
+*.pyo
+.ipynb_checkpoints/
+*.egg-info/
+mlruns/
+ml/data/processed/
+ml/outputs/
