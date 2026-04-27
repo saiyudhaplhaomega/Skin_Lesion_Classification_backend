@@ -70,6 +70,14 @@ ml/outputs/models/
 
 For local development, keep the backend and research repos as siblings so the research path helpers can find `Skin_Lesion_Classification_backend/ml/`.
 
+Jupyter kernels are registered from the research repo, not here:
+
+```bash
+cd ../Skin_Lesion_XAI_research
+make setup
+make register-kernel
+```
+
 ## Build Guide
 
 Use [`BUILD_BACKEND.md`](BUILD_BACKEND.md) for a beginner-friendly implementation walkthrough.
