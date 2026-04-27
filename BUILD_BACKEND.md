@@ -4,6 +4,38 @@
 
 ---
 
+## How This Guide Relates To The Root Docs
+
+This file is the beginner-friendly backend tutorial. Keep it in the backend repo because it teaches the first files to create and the basic FastAPI concepts.
+
+For production decisions, also read these root guides:
+
+- `../docs/BUILD_PHASE_2_BACKEND.md` - production backend sequence
+- `../docs/SYSTEM_DESIGN_LEARNING_GUIDE.md` - why FastAPI, Redis, S3, SQS, RDS, and MLflow are used
+- `../docs/PRODUCTION_BUILD_REVIEW.md` - current implementation gaps and production blockers
+
+If this file and the root docs disagree, treat the root docs as the production source of truth and update this file.
+
+## Current Reality
+
+The backend repo currently contains ML helper code and requirements, but the FastAPI app still needs to be built. Start with:
+
+1. `GET /health`
+2. mocked `POST /api/v1/predict`
+3. file validation tests
+4. real model loading
+5. Redis-backed `/explain`
+
+Do not start by building every endpoint at once.
+
+## Dependency Note
+
+The dependency snippet below is for learning. Before installing, compare it to the real `requirements.txt` in this repo. The current production baseline uses newer FastAPI/PyTorch packages and should stay the source of truth.
+
+For backend Docker images, prefer `opencv-python-headless` instead of GUI OpenCV packages.
+
+---
+
 ## Table of Contents
 
 1. [What is a Backend?](#1-what-is-a-backend)
