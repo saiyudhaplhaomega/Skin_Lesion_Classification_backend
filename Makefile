@@ -33,10 +33,10 @@ setup:
 	@echo "Done."
 
 install:
-	$(VENV_PYTHON) -m pip install -r requirements.txt
+	$(VENV_PYTHON) -m pip install --extra-index-url https://download.pytorch.org/whl/cu124 -r requirements.txt
 
 install-dev:
-	$(VENV_PYTHON) -m pip install -r requirements-dev.txt
+	$(VENV_PYTHON) -m pip install --extra-index-url https://download.pytorch.org/whl/cu124 -r requirements-dev.txt
 
 run:
 	$(VENV_PYTHON) -m uvicorn app.main:app --reload --port 8000
