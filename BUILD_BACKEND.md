@@ -18,13 +18,19 @@ If this file and the root docs disagree, treat the root docs as the production s
 
 ## Current Reality
 
-The backend repo currently contains ML helper code and requirements, but the FastAPI app still needs to be built. Start with:
+The backend repo currently contains ML helper code, model artifacts, dependency files, and Makefile targets. The FastAPI app still needs to be built.
+
+Research notebooks, RQ1-RQ6 experiments, paper figures, and research metrics now live in `../Skin_Lesion_XAI_research`. Do not add or document notebook workflows as backend-owned work.
+
+Start with:
 
 1. `GET /health`
 2. mocked `POST /api/v1/predict`
 3. file validation tests
 4. real model loading
 5. Redis-backed `/explain`
+
+Model artifacts produced by research should be handed to the backend through `ml/outputs/models/` or through the future MLflow/S3 model registry. The backend should serve models; the research repo should train and evaluate them.
 
 Do not start by building every endpoint at once.
 
