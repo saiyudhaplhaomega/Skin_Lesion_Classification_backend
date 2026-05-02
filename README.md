@@ -32,6 +32,7 @@ The FastAPI app still needs to be built. Start with the smallest useful API surf
 6. Redis-backed `POST /api/v1/explain`
 7. rule-based explanation fallback
 8. LLM/RAG explanation endpoint
+9. CrewAI expert-panel workflow after the single-agent explanation path is safe and testable
 
 ## Quick Start
 
@@ -102,6 +103,20 @@ Blocked:
 - interpreting heatmaps as disease proof
 
 Use deterministic templates as fallback when LLM providers, local models, or RAG retrieval fail.
+
+CrewAI is approved as a later expert-panel feature. It should consume the same structured prediction, image-quality, heatmap, and RAG facts as the normal explanation endpoint. Do not let CrewAI bypass the safety validator or answer as a doctor.
+
+## Scale Direction
+
+The backend should be built sharding-ready even while local development starts simple.
+
+- Include `user_id` on analysis, prediction, heatmap, explanation, chat, and audit records.
+- Add `tenant_id` later when clinic or organization accounts exist.
+- Use cursor pagination for large doctor/admin lists.
+- Store images, overlays, and reports in S3-compatible object storage, not Postgres.
+- Keep API containers stateless.
+- Put slow prediction, Grad-CAM, LLM, report generation, and consent pipeline work onto queues.
+- Start with one Postgres database, then add indexes, partitioning, read replicas, and only then physical sharding.
 
 ## Model Artifacts
 
