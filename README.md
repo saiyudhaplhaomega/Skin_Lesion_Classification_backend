@@ -1,8 +1,8 @@
 # Skin Lesion Classification Backend
 
-FastAPI backend for skin lesion inference and explainability.
+FastAPI backend for skin lesion inference, image-quality checks, explainability, and safe AI explanations.
 
-This repo owns the service layer: API endpoints, model loading for serving, Grad-CAM generation, consent/retraining API flows, and deployment packaging. Research notebooks and RQ1-RQ6 experiments live in the separate research repo.
+This repo owns the service layer: API endpoints, model loading for serving, image-quality gating, Grad-CAM generation, LLM/RAG explanation orchestration, consent/retraining API flows, and deployment packaging. Research notebooks and RQ1-RQ6 experiments live in the separate research repo.
 
 ## Repo Boundaries
 
@@ -25,10 +25,13 @@ The repo currently contains:
 The FastAPI app still needs to be built. Start with the smallest useful API surface:
 
 1. `GET /health`
-2. mocked `POST /api/v1/predict`
-3. image validation tests
-4. real model loading from `ml/outputs/models/`
-5. Redis-backed `POST /api/v1/explain`
+2. `POST /api/v1/image-quality`
+3. mocked `POST /api/v1/predict`
+4. image validation and retake-guidance tests
+5. real model loading from `ml/outputs/models/`
+6. Redis-backed `POST /api/v1/explain`
+7. rule-based explanation fallback
+8. LLM/RAG explanation endpoint
 
 ## Quick Start
 
@@ -51,10 +54,54 @@ skin-lesion-env\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 | Endpoint | Purpose |
 | --- | --- |
 | `GET /health` | Report service and model-load status |
+| `POST /api/v1/image-quality` | Score blur, lighting, framing, resolution, glare, and return retake guidance or proceed-with-warning flags |
 | `POST /api/v1/predict` | Accept an image and return diagnosis, confidence, model version, and prediction ID |
 | `POST /api/v1/explain` | Return Grad-CAM or related heatmap outputs for a prediction |
+| `POST /api/v1/explain-llm` | Return a guarded, RAG-grounded natural-language explanation of the prediction and heatmap |
+| `POST /api/v1/chat` | Follow-up chat over one analysis, constrained by RAG policy and safety guardrails |
 | `POST /api/v1/consent` | Persist opted-in training cases through the consent pipeline |
 | `GET /docs` | FastAPI interactive API documentation |
+
+## Product Pipeline
+
+Build the backend pipeline in this order:
+
+```text
+image upload
+-> image-quality gate
+-> prediction
+-> Grad-CAM / heatmap
+-> explanation facts builder
+-> rule-based fallback
+-> RAG policy retrieval
+-> online/local LLM explanation
+-> safety validator
+-> final response
+```
+
+The image-quality gate should return actionable guidance such as better lighting, steadier capture, centered framing, less glare, original-file upload instead of screenshots, or using a better camera if available.
+
+Poor images should not always be hard-blocked. Return `requires_user_acknowledgement = true` and allow the frontend to offer `Retake Photo` or `Proceed Anyway`.
+
+## LLM and RAG Guardrails
+
+The LLM layer must explain structured model outputs; it must not diagnose from the image.
+
+Allowed:
+
+- explain the model prediction and confidence
+- explain what Grad-CAM highlights mean
+- explain image-quality limitations
+- recommend professional review for concerning or uncertain cases
+
+Blocked:
+
+- definitive diagnosis claims
+- treatment recommendations
+- telling users to ignore doctors
+- interpreting heatmaps as disease proof
+
+Use deterministic templates as fallback when LLM providers, local models, or RAG retrieval fail.
 
 ## Model Artifacts
 
@@ -87,6 +134,8 @@ For production sequencing and architecture decisions, use the root docs:
 - `../docs/BUILD_PHASE_2_BACKEND.md`
 - `../docs/PRODUCTION_BUILD_REVIEW.md`
 - `../docs/SYSTEM_DESIGN_LEARNING_GUIDE.md`
+- `../docs/PRODUCT_LAUNCH_STRATEGY.md`
+- `../docs/BUILD_GUIDE_AUDIT.md`
 
 ## Verification
 
