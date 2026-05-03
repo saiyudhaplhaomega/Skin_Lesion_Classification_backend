@@ -15,20 +15,19 @@ This repo owns the service layer: API endpoints, model loading for serving, imag
 
 ## Current State
 
-The repo currently contains:
+The repo currently contains a clean backend scaffold:
 
-- `ml/src/` shared ML modules used by training and serving
-- `ml/data/processed/metadata_with_paths.csv`
-- model artifacts under `ml/outputs/models/`
 - backend dependency files and Makefile targets
+- beginner-friendly backend build documentation
+- project guidance files
 
-The FastAPI app still needs to be built. Start with the smallest useful API surface:
+The FastAPI `app/` package has intentionally not been created yet. Build it from scratch using `BUILD_BACKEND.md` or the root follow-along guides. Start with the smallest useful API surface:
 
 1. `GET /health`
 2. `POST /api/v1/image-quality`
 3. mocked `POST /api/v1/predict`
 4. image validation and retake-guidance tests
-5. real model loading from `ml/outputs/models/`
+5. real model loading from exported research artifacts or the future MLflow/S3 model registry
 6. Redis-backed `POST /api/v1/explain`
 7. rule-based explanation fallback
 8. LLM/RAG explanation endpoint
@@ -38,6 +37,7 @@ The FastAPI app still needs to be built. Start with the smallest useful API surf
 
 ```bash
 make setup
+# Then create app/main.py from BUILD_BACKEND.md before running:
 make run
 ```
 
@@ -47,6 +47,7 @@ Equivalent manual commands:
 py -3.13 -m venv skin-lesion-env
 skin-lesion-env\Scripts\python.exe -m pip install --upgrade pip
 skin-lesion-env\Scripts\python.exe -m pip install -r requirements-dev.txt
+REM Run this after creating app/main.py from the build guide:
 skin-lesion-env\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 ```
 
@@ -120,7 +121,7 @@ The backend should be built sharding-ready even while local development starts s
 
 ## Model Artifacts
 
-Research and training work should happen in `../Skin_Lesion_XAI_research`. Backend serving consumes the resulting artifacts from:
+Research and training work should happen in `../Skin_Lesion_XAI_research`. Backend serving should consume exported artifacts from a future local model directory or from the production MLflow/S3 model registry. If you choose a local handoff during development, use this shape:
 
 ```text
 ml/outputs/models/
@@ -130,7 +131,7 @@ ml/outputs/models/
   checkpoints/
 ```
 
-For local development, keep the backend and research repos as siblings so the research path helpers can find `Skin_Lesion_Classification_backend/ml/`.
+For local development, keep the backend and research repos as siblings. If you create a local backend model-artifact directory, do not commit private datasets, patient images, or large checkpoints unless you intentionally decide they belong in Git.
 
 Jupyter kernels are registered from the research repo, not here:
 
