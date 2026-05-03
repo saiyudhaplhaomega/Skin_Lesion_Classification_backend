@@ -147,11 +147,11 @@ Use [`BUILD_BACKEND.md`](BUILD_BACKEND.md) for a beginner-friendly implementatio
 
 For production sequencing and architecture decisions, use the root docs:
 
-- `../docs/BUILD_PHASE_2_BACKEND.md`
-- `../docs/PRODUCTION_BUILD_REVIEW.md`
-- `../docs/SYSTEM_DESIGN_LEARNING_GUIDE.md`
-- `../docs/PRODUCT_LAUNCH_STRATEGY.md`
-- `../docs/BUILD_GUIDE_AUDIT.md`
+- `../docs/12_BUILD_PHASE_2_BACKEND.md`
+- `../docs/02_PRODUCTION_BUILD_REVIEW.md`
+- `../docs/32_SYSTEM_DESIGN_LEARNING_GUIDE.md`
+- `../docs/33_PRODUCT_LAUNCH_STRATEGY.md`
+- `../docs/35_BUILD_GUIDE_AUDIT.md`
 
 ## Verification
 

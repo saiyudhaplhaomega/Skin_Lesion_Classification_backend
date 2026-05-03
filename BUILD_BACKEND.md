@@ -10,9 +10,9 @@ This file is the beginner-friendly backend tutorial. Keep it in the backend repo
 
 For production decisions, also read these root guides:
 
-- `../docs/BUILD_PHASE_2_BACKEND.md` - production backend sequence
-- `../docs/SYSTEM_DESIGN_LEARNING_GUIDE.md` - why FastAPI, Redis, S3, SQS, RDS, and MLflow are used
-- `../docs/PRODUCTION_BUILD_REVIEW.md` - current implementation gaps and production blockers
+- `../docs/12_BUILD_PHASE_2_BACKEND.md` - production backend sequence
+- `../docs/32_SYSTEM_DESIGN_LEARNING_GUIDE.md` - why FastAPI, Redis, S3, SQS, RDS, and MLflow are used
+- `../docs/02_PRODUCTION_BUILD_REVIEW.md` - current implementation gaps and production blockers
 
 If this file and the root docs disagree, treat the root docs as the production source of truth and update this file.
 
